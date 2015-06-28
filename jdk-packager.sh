@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # configuration variables
-JAVA_VERSION_MAJOR=
-JAVA_VERSION_UPDATE=
-JAVA_VERSION_BUILD=
+JAVA_VERSION_MAJOR=8
+JAVA_VERSION_UPDATE=45
+JAVA_VERSION_BUILD=14
 # jdk or server-jre
 JAVA_PACKAGE=server-jre
 PROXY_SERVER=
 
-while getopts "m:u:b:p:j:" opt; do
+while getopts "m:u:b:j:p:" opt; do
   case $opt in
     m)
       echo "major: $OPTARG" >&2
@@ -48,13 +48,14 @@ JCE_PACKAGE=jce_policy-${JAVA_VERSION_MAJOR}.zip
 JCE_DIRECTORY=UnlimitedJCEPolicyJDK${JAVA_VERSION_MAJOR}
 JDK_DIRECTORY=jdk1.${JAVA_VERSION_MAJOR}.0_${JAVA_VERSION_UPDATE}
 
+# convenience functions
 download_from_oracle_com() {
   if [ -z $PROXY_SERVER ]
     then
-      echo "proxy host set" >&2
+      echo "proxy host not set" >&2
       curl -LOH "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" $1
     else
-      echo "proxy host not set" >&2
+      echo "proxy host set" >&2
       curl -LOH "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" -x $PROXY_SERVER $1
   fi
 }
