@@ -11,24 +11,19 @@ PROXY_SERVER=
 while getopts "m:u:b:j:p:" opt; do
   case $opt in
     m)
-      echo "major: $OPTARG" >&2
-      JAVA_VERSION_MAJOR=OPTARG
+      JAVA_VERSION_MAJOR=$OPTARG
       ;;
     u)
-      echo "update: $OPTARG" >&2
-      JAVA_VERSION_UPDATE=OPTARG
+      JAVA_VERSION_UPDATE=$OPTARG
       ;;
     b)
-      echo "build: $OPTARG" >&2
-      JAVA_VERSION_UPDATE=OPTARG
+      JAVA_VERSION_BUILD=$OPTARG
       ;;
     j)
-      echo "java packager: $OPTARG" >&2
-      JAVA_PACKAGE=OPTARG
+      JAVA_PACKAGE=$OPTARG
       ;;
     p)
-      echo "proxy: $OPTARG" >&2
-      PROXY_SERVER=OPTARG
+      PROXY_SERVER=$OPTARG
       ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
@@ -48,14 +43,13 @@ JCE_PACKAGE=jce_policy-${JAVA_VERSION_MAJOR}.zip
 JCE_DIRECTORY=UnlimitedJCEPolicyJDK${JAVA_VERSION_MAJOR}
 JDK_DIRECTORY=jdk1.${JAVA_VERSION_MAJOR}.0_${JAVA_VERSION_UPDATE}
 
+
 # convenience functions
 download_from_oracle_com() {
   if [ -z $PROXY_SERVER ]
     then
-      echo "proxy host not set" >&2
       curl -LOH "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" $1
     else
-      echo "proxy host set" >&2
       curl -LOH "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" -x $PROXY_SERVER $1
   fi
 }
@@ -80,7 +74,7 @@ sed -E "s/securerandom\.source=.*/securerandom\.source=file:\/dev\/urandom/g" ${
 mv java.security~ ${JDK_DIRECTORY}/jre/lib/security/java.security
 
 mkdir target/
-tar -czf target/output-${JAVA_PACKAGE}-1.{JAVA_VERSION_MAJOR}.0u${JAVA_VERSION_BUILD}.tar.gz $JDK_DIRECTORY
+tar -czf target/output-${JAVA_PACKAGE}-1.${JAVA_VERSION_MAJOR}.0u${JAVA_VERSION_BUILD}.tar.gz $JDK_DIRECTORY
 
 # clean up
 rm -rf $JCE_DIRECTORY
