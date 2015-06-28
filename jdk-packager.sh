@@ -1,13 +1,14 @@
 #!/bin/bash
 
 # configuration variables
-JAVA_VERSION_MAJOR=8
-JAVA_VERSION_UPDATE=45
-JAVA_VERSION_BUILD=14
+JAVA_VERSION_MAJOR=
+JAVA_VERSION_UPDATE=
+JAVA_VERSION_BUILD=
+# jdk or server-jre
 JAVA_PACKAGE=server-jre
 PROXY_SERVER=
 
-while getopts "m:u:b:p:" opt; do
+while getopts "m:u:b:p:j:" opt; do
   case $opt in
     m)
       echo "major: $OPTARG" >&2
@@ -21,11 +22,14 @@ while getopts "m:u:b:p:" opt; do
       echo "build: $OPTARG" >&2
       JAVA_VERSION_UPDATE=OPTARG
       ;;
+    j)
+      echo "java packager: $OPTARG" >&2
+      JAVA_PACKAGE=OPTARG
+      ;;
     p)
       echo "proxy: $OPTARG" >&2
       PROXY_SERVER=OPTARG
       ;;
-
     \?)
       echo "Invalid option: -$OPTARG" >&2
       exit 1
@@ -74,7 +78,8 @@ mv ${JCE_DIRECTORY}/*.jar "${JDK_DIRECTORY}/jre/lib/security/"
 sed -E "s/securerandom\.source=.*/securerandom\.source=file:\/dev\/urandom/g" ${JDK_DIRECTORY}/jre/lib/security/java.security > java.security~
 mv java.security~ ${JDK_DIRECTORY}/jre/lib/security/java.security
 
-tar -czf output-jdk-1.{JAVA_VERSION_MAJOR}.0u${JAVA_VERSION_BUILD}.tar.gz $JDK_DIRECTORY
+mkdir target/
+tar -czf target/output-${JAVA_PACKAGE}-1.{JAVA_VERSION_MAJOR}.0u${JAVA_VERSION_BUILD}.tar.gz $JDK_DIRECTORY
 
 # clean up
 rm -rf $JCE_DIRECTORY
