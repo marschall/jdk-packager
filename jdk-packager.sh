@@ -78,7 +78,10 @@ if [ "$(uname)" == "Darwin" ]
 if
 mv java.security~ ${JDK_DIRECTORY}/jre/lib/security/java.security
 
-mkdir target/
+if [ ! -d ]
+  then
+    mkdir target/
+if
 tar -czf target/output-${JAVA_PACKAGE}-1.${JAVA_VERSION_MAJOR}.0u${JAVA_VERSION_BUILD}.tar.gz $JDK_DIRECTORY
 
 # clean up
