@@ -70,7 +70,12 @@ unzip -q $JCE_PACKAGE
 # add the updated JCE policy files
 mv ${JCE_DIRECTORY}/*.jar "${JDK_DIRECTORY}/jre/lib/security/"
 # set the egd to /dev/urandom
-sed -E "s/securerandom\.source=.*/securerandom\.source=file:\/dev\/urandom/g" ${JDK_DIRECTORY}/jre/lib/security/java.security > java.security~
+if [ "$(uname)" == "Darwin" ]
+  then
+    sed -E "s/securerandom\.source=.*/securerandom\.source=file:\/dev\/urandom/g" ${JDK_DIRECTORY}/jre/lib/security/java.security > java.security~
+  else
+    sed -r "s/securerandom\.source=.*/securerandom\.source=file:\/dev\/urandom/g" ${JDK_DIRECTORY}/jre/lib/security/java.security > java.security~
+if
 mv java.security~ ${JDK_DIRECTORY}/jre/lib/security/java.security
 
 mkdir target/
