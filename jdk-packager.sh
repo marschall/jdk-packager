@@ -42,7 +42,7 @@ ORIGINAL_PACKAGE=${JAVA_PACKAGE}-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_UPDATE}-li
 JCE_PACKAGE=jce_policy-${JAVA_VERSION_MAJOR}.zip
 JCE_DIRECTORY=UnlimitedJCEPolicyJDK${JAVA_VERSION_MAJOR}
 JDK_DIRECTORY=jdk1.${JAVA_VERSION_MAJOR}.0_${JAVA_VERSION_UPDATE}
-
+FINAL_ARTIFACT=target/output-${JAVA_PACKAGE}-1.${JAVA_VERSION_MAJOR}.0u${JAVA_VERSION_BUILD}.tar.gz
 
 # convenience functions
 download_from_oracle_com() {
@@ -80,14 +80,19 @@ if [ "$(uname)" == "Darwin" ]
     sed -E "s/securerandom\.source=.*/securerandom\.source=file:\/dev\/urandom/g" ${JDK_DIRECTORY}/jre/lib/security/java.security > java.security~
   else
     sed -r "s/securerandom\.source=.*/securerandom\.source=file:\/dev\/urandom/g" ${JDK_DIRECTORY}/jre/lib/security/java.security > java.security~
-if
+fi
 mv java.security~ ${JDK_DIRECTORY}/jre/lib/security/java.security
 
 if [ ! -d ]
   then
     mkdir target/
-if
-tar -czf target/output-${JAVA_PACKAGE}-1.${JAVA_VERSION_MAJOR}.0u${JAVA_VERSION_BUILD}.tar.gz $JDK_DIRECTORY
+fi
+
+if [ -f $FINAL_ARTIFACT ]
+  then
+    rm $FINAL_ARTIFACT
+fi
+tar -czf $FINAL_ARTIFACT $JDK_DIRECTORY
 
 # clean up
 rm -rf $JCE_DIRECTORY
