@@ -52,6 +52,11 @@ download_from_oracle_com() {
     else
       curl -LOH "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" -x $PROXY_SERVER $1
   fi
+  if [ "$?" != "0" ]
+    then
+      echo "Could not download artifact" 1>&2
+      exit 1
+  fi
 }
 
 if [ ! -f $ORIGINAL_PACKAGE ]
