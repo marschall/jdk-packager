@@ -4,11 +4,12 @@
 JAVA_VERSION_MAJOR=8
 JAVA_VERSION_UPDATE=45
 JAVA_VERSION_BUILD=14
+JAVA_VERSION_UUID=
 # jdk or server-jre
 JAVA_PACKAGE=server-jre
 PROXY_SERVER=
 
-while getopts "m:u:b:j:p:" opt; do
+while getopts "m:u:b:j:p:g:" opt; do
   case $opt in
     m)
       JAVA_VERSION_MAJOR=$OPTARG
@@ -18,6 +19,9 @@ while getopts "m:u:b:j:p:" opt; do
       ;;
     b)
       JAVA_VERSION_BUILD=$OPTARG
+      ;;
+    g)
+      JAVA_VERSION_UUID="/$OPTARG"
       ;;
     j)
       JAVA_PACKAGE=$OPTARG
@@ -61,7 +65,7 @@ download_from_oracle_com() {
 
 if [ ! -f $ORIGINAL_PACKAGE ]
   then
-    download_from_oracle_com "http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION_MAJOR}u${JAVA_VERSION_UPDATE}-b${JAVA_VERSION_BUILD}/${JAVA_PACKAGE}-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_UPDATE}-linux-x64.tar.gz"
+    download_from_oracle_com "http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION_MAJOR}u${JAVA_VERSION_UPDATE}-b${JAVA_VERSION_BUILD}${JAVA_VERSION_UUID}/${JAVA_PACKAGE}-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_UPDATE}-linux-x64.tar.gz"
 fi
 
 if [ ! -f $JCE_PACKAGE ]
