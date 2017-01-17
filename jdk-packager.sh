@@ -87,7 +87,7 @@ if [ "$(uname)" == "Darwin" ]
 fi
 mv java.security~ ${JDK_DIRECTORY}/jre/lib/security/java.security
 
-if [ ! -d ]
+if [ ! -d target/ ]
   then
     mkdir target/
 fi
