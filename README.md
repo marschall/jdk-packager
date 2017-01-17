@@ -17,6 +17,8 @@ Options supported:
   <dd>update release -eg `45`</dd>
   <dt>-b</dt>
   <dd>build of the update release eg. `14`, you have to manually inspect the download links to find this out</dd>
+  <dt>-g</dt>
+  <dd>the UUID in the download URL (starting with 8u121) eg. `e9e7ea248e2c4826b92b3f075a80e441`, you have to manually inspect the download links to find this out, optional</dd>
   <dt>-j</dt>
   <dd>package to use `jdk` or `server-jre`</dd>
   <dt>-p</dt>
