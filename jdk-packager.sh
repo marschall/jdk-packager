@@ -50,27 +50,23 @@ FINAL_ARTIFACT=target/${JAVA_PACKAGE}-1.${JAVA_VERSION_MAJOR}.0u${JAVA_VERSION_U
 
 # convenience functions
 download_from_oracle_com() {
-  if [ -z $PROXY_SERVER ]
-    then
-      curl -fLOH "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" $1
-    else
-      curl -fLOH "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" -x $PROXY_SERVER $1
+  if [ -z $PROXY_SERVER ]; then
+    curl -fLOH "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" $1
+  else
+    curl -fLOH "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" -x $PROXY_SERVER $1
   fi
-  if [ $? -ne 0 ]
-    then
-      echo "Could not download artifact" 1>&2
-      exit 1
+  if [ $? -ne 0 ]; then
+    echo "Could not download artifact" 1>&2
+    exit 1
   fi
 }
 
-if [ ! -f $ORIGINAL_PACKAGE ]
-  then
-    download_from_oracle_com "http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION_MAJOR}u${JAVA_VERSION_UPDATE}-b${JAVA_VERSION_BUILD}${JAVA_VERSION_UUID}/${JAVA_PACKAGE}-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_UPDATE}-linux-x64.tar.gz"
+if [ ! -f $ORIGINAL_PACKAGE ]; then
+  download_from_oracle_com "http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION_MAJOR}u${JAVA_VERSION_UPDATE}-b${JAVA_VERSION_BUILD}${JAVA_VERSION_UUID}/${JAVA_PACKAGE}-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_UPDATE}-linux-x64.tar.gz"
 fi
 
-if [ ! -f $JCE_PACKAGE ]
-  then
-    download_from_oracle_com "http://download.oracle.com/otn-pub/java/jce/${JAVA_VERSION_MAJOR}/jce_policy-${JAVA_VERSION_MAJOR}.zip"
+if [ ! -f $JCE_PACKAGE ]; then
+  download_from_oracle_com "http://download.oracle.com/otn-pub/java/jce/${JAVA_VERSION_MAJOR}/jce_policy-${JAVA_VERSION_MAJOR}.zip"
 fi
 tar -xzf $ORIGINAL_PACKAGE
 unzip -q $JCE_PACKAGE
@@ -81,9 +77,8 @@ mv ${JCE_DIRECTORY}/*.jar "${JDK_DIRECTORY}/jre/lib/security/"
 sed -i.bak 's;securerandom.source=.*;securerandom.source=file:/dev/urandom;g' ${JDK_DIRECTORY}/jre/lib/security/java.security
 mkdir -p target
 
-if [ -f $FINAL_ARTIFACT ]
-  then
-    rm $FINAL_ARTIFACT
+if [ -f $FINAL_ARTIFACT ]; then
+  rm $FINAL_ARTIFACT
 fi
 tar -czf $FINAL_ARTIFACT $JDK_DIRECTORY
 
