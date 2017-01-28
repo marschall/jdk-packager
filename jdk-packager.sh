@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Locations
+BASEDIR=`cd $(dirname $0); pwd`
+WORKINGDIR=`pwd`
+SCRIPT_NAME=`basename $0`
+
 # configuration variables
 JAVA_VERSION_MAJOR=8
 JAVA_VERSION_UPDATE=45
@@ -9,7 +14,24 @@ JAVA_VERSION_UUID=
 JAVA_PACKAGE=server-jre
 PROXY_SERVER=
 
-while getopts "m:u:b:j:p:g:" opt; do
+print_usage() {
+   cat << EOF
+Usage: $SCRIPT_NAME <options>
+  <options>:
+    -m    Java major version
+    -u    Java update version
+    -b    Java build version
+    -g    Java version UUID (for Java 8u121 and greater)
+    -j    Java package (jdk or server-jre)
+    -h    Print this help message
+
+  Example for server-jre 8u121:
+  $SCRIPT_NAME -m 8 -u 121 -b 13 -g e9e7ea248e2c4826b92b3f075a80e441
+
+EOF
+}
+
+while getopts "hm:u:b:j:p:g:" opt; do
   case $opt in
     m)
       JAVA_VERSION_MAJOR=$OPTARG
@@ -28,6 +50,10 @@ while getopts "m:u:b:j:p:g:" opt; do
       ;;
     p)
       PROXY_SERVER=$OPTARG
+      ;;
+    h)
+      print_usage
+      exit 0
       ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
