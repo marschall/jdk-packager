@@ -1,5 +1,2 @@
-*.zip
-*.tar.gz
-UnlimitedJCEPolicyJDK*/
+target/
 *.swp
-jdk*/
