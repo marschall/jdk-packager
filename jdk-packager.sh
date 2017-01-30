@@ -92,6 +92,11 @@ download_from_oracle_com() {
   fi
 }
 
+# clean up first
+if [ -f $TEMP_DIR ]; then
+  rm -rf $TEMP_DIR
+fi
+
 # Create directories
 mkdir -p "${TARGET_DIR}"
 mkdir -p "${DOWNLOAD_DIR}"
