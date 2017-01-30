@@ -115,7 +115,7 @@ sed -i.bak 's;securerandom.source=.*;securerandom.source=file:/dev/urandom;g' ${
 if [ -f $FINAL_ARTIFACT ]; then
   rm $FINAL_ARTIFACT
 fi
-tar -czf $FINAL_ARTIFACT $JDK_DIRECTORY
+tar -czf ${FINAL_ARTIFACT} -C ${TEMP_DIR} $(basename ${JDK_DIRECTORY})
 
 # clean up
 rm -rf $TEMP_DIR
