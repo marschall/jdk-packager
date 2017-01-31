@@ -92,15 +92,19 @@ download_from_oracle_com() {
   fi
 }
 
-# clean up first
-if [ -f $TEMP_DIR ]; then
-  rm -rf $TEMP_DIR
-fi
+prepare_directories() {
+  # clean up first
+  if [ -f ${TEMP_DIR} ]; then
+    rm -rf ${TEMP_DIR}
+  fi
 
-# Create directories
-mkdir -p "${TARGET_DIR}"
-mkdir -p "${DOWNLOAD_DIR}"
-mkdir -p "${TEMP_DIR}"
+  # Create directories
+  mkdir -p "${TARGET_DIR}"
+  mkdir -p "${DOWNLOAD_DIR}"
+  mkdir -p "${TEMP_DIR}"
+}
+
+prepare_directories
 
 if [ ! -f $ORIGINAL_PACKAGE ]; then
   download_from_oracle_com "http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION_MAJOR}u${JAVA_VERSION_UPDATE}-b${JAVA_VERSION_BUILD}${JAVA_VERSION_UUID}/${JAVA_PACKAGE}-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_UPDATE}-linux-x64.tar.gz" "${DOWNLOAD_DIR}"
@@ -109,6 +113,7 @@ fi
 if [ ! -f $JCE_PACKAGE ]; then
   download_from_oracle_com "http://download.oracle.com/otn-pub/java/jce/${JAVA_VERSION_MAJOR}/jce_policy-${JAVA_VERSION_MAJOR}.zip" "${DOWNLOAD_DIR}"
 fi
+
 tar -xzf $ORIGINAL_PACKAGE -C ${TEMP_DIR}
 unzip -q $JCE_PACKAGE -d ${TEMP_DIR}
 
