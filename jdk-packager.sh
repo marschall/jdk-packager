@@ -98,6 +98,10 @@ prepare_directories() {
     rm -rf ${TEMP_DIR}
   fi
 
+  if [ -f ${FINAL_ARTIFACT} ]; then
+    rm ${FINAL_ARTIFACT}
+  fi
+
   # Create directories
   mkdir -p "${TARGET_DIR}"
   mkdir -p "${DOWNLOAD_DIR}"
@@ -122,9 +126,6 @@ mv ${JCE_DIRECTORY}/*.jar "${JDK_DIRECTORY}/jre/lib/security/"
 # set the egd to /dev/urandom
 sed -i.bak 's;securerandom.source=.*;securerandom.source=file:/dev/urandom;g' ${JDK_DIRECTORY}/jre/lib/security/java.security
 
-if [ -f $FINAL_ARTIFACT ]; then
-  rm $FINAL_ARTIFACT
-fi
 tar -czf ${FINAL_ARTIFACT} -C ${TEMP_DIR} $(basename ${JDK_DIRECTORY})
 
 # clean up
