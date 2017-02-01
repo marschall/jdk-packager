@@ -31,6 +31,36 @@ Usage: $SCRIPTNAME <options>
 EOF
 }
 
+prepare_directories() {
+  # clean up first
+  if [ -f ${TEMP_DIR} ]; then
+    rm -rf ${TEMP_DIR}
+  fi
+
+  if [ -f ${FINAL_ARTIFACT} ]; then
+    rm ${FINAL_ARTIFACT}
+  fi
+
+  # Create directories
+  mkdir -p "${TARGET_DIR}"
+  mkdir -p "${DOWNLOAD_DIR}"
+  mkdir -p "${TEMP_DIR}"
+}
+
+download_from_oracle_com() {
+  url=$1
+  download_dir=$2
+  if [ -z $PROXY_SERVER ]; then
+    (cd "${download_dir}" && curl -fLOH "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" ${url})
+  else
+    (cd "${download_dir}" && curl -fLOH "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" -x $PROXY_SERVER ${url})
+  fi
+  if [ $? -ne 0 ]; then
+    echo "Could not download artifact" 1>&2
+    exit 1
+  fi
+}
+
 while getopts "hm:u:b:j:p:g:" opt; do
   case $opt in
     m)
@@ -68,7 +98,7 @@ done
 
 
 # convenience variables
-TARGET_DIR=${WORKINGDIR}/target
+TARGET_DIR=$./target
 DOWNLOAD_DIR=${TARGET_DIR}/download
 TEMP_DIR=${TARGET_DIR}/tmp
 ORIGINAL_PACKAGE=${DOWNLOAD_DIR}/${JAVA_PACKAGE}-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_UPDATE}-linux-x64.tar.gz
@@ -77,36 +107,6 @@ JCE_DIRECTORY=${TEMP_DIR}/UnlimitedJCEPolicyJDK${JAVA_VERSION_MAJOR}
 JDK_DIRECTORY=${TEMP_DIR}/jdk1.${JAVA_VERSION_MAJOR}.0_${JAVA_VERSION_UPDATE}
 FINAL_ARTIFACT=${TARGET_DIR}/${JAVA_PACKAGE}-1.${JAVA_VERSION_MAJOR}.0u${JAVA_VERSION_UPDATE}.tar.gz
 
-# convenience functions
-download_from_oracle_com() {
-  url=$1
-  download_dir=$2
-  if [ -z $PROXY_SERVER ]; then
-    (cd "${download_dir}" && curl -fLOH "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" ${url})
-  else
-    (cd "${download_dir}" && curl -fLOH "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" -x $PROXY_SERVER ${url})
-  fi
-  if [ $? -ne 0 ]; then
-    echo "Could not download artifact" 1>&2
-    exit 1
-  fi
-}
-
-prepare_directories() {
-  # clean up first
-  if [ -f ${TEMP_DIR} ]; then
-    rm -rf ${TEMP_DIR}
-  fi
-
-  if [ -f ${FINAL_ARTIFACT} ]; then
-    rm ${FINAL_ARTIFACT}
-  fi
-
-  # Create directories
-  mkdir -p "${TARGET_DIR}"
-  mkdir -p "${DOWNLOAD_DIR}"
-  mkdir -p "${TEMP_DIR}"
-}
 
 prepare_directories
 
