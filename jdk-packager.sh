@@ -4,7 +4,7 @@
 SCRIPTDIR=`cd $(dirname $0); pwd`
 SCRIPTNAME=`basename $0`
 WORKINGDIR=`pwd`
-TARGET_DIR=$./target
+TARGET_DIR=./target
 DOWNLOAD_DIR=${TARGET_DIR}/download
 TEMP_DIR=${TARGET_DIR}/tmp
 
@@ -47,24 +47,24 @@ EOF
 }
 
 while getopts "hm:u:b:j:p:g:" opt; do
-  case $opt in
+  case ${opt} in
     m)
-      JAVA_VERSION_MAJOR=$OPTARG
+      JAVA_VERSION_MAJOR=${OPTARG}
       ;;
     u)
-      JAVA_VERSION_UPDATE=$OPTARG
+      JAVA_VERSION_UPDATE=${OPTARG}
       ;;
     b)
-      JAVA_VERSION_BUILD=$OPTARG
+      JAVA_VERSION_BUILD=${OPTARG}
       ;;
     g)
-      JAVA_VERSION_UUID="/$OPTARG"
+      JAVA_VERSION_UUID="/${OPTARG}"
       ;;
     j)
-      JAVA_PACKAGE=$OPTARG
+      JAVA_PACKAGE=${OPTARG}
       ;;
     p)
-      PROXY_SERVER=$OPTARG
+      PROXY_SERVER=${OPTARG}
       ;;
     h)
       print_usage 0
@@ -82,13 +82,14 @@ done
 [ ! -z ${JAVA_VERSION_UPDATE} ] || print_usage 1 "Update version not set"
 [ ! -z ${JAVA_VERSION_BUILD} ] || print_usage 1 "Build version not set"
 
+# Convenience functions
 download_from_oracle_com() {
   url=$1
   download_dir=$2
-  if [ -z $PROXY_SERVER ]; then
+  if [ -z ${PROXY_SERVER} ]; then
     (cd "${download_dir}" && curl -fLOH "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" ${url})
   else
-    (cd "${download_dir}" && curl -fLOH "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" -x $PROXY_SERVER ${url})
+    (cd "${download_dir}" && curl -fLOH "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" -x ${PROXY_SERVER} ${url})
   fi
   if [ $? -ne 0 ]; then
     echo "Could not download artifact" 1>&2
@@ -117,16 +118,16 @@ mkdir -p "${TARGET_DIR}"
 mkdir -p "${DOWNLOAD_DIR}"
 mkdir -p "${TEMP_DIR}"
 
-if [ ! -f $ORIGINAL_PACKAGE ]; then
+if [ ! -f ${ORIGINAL_PACKAGE} ]; then
   download_from_oracle_com "http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION_MAJOR}u${JAVA_VERSION_UPDATE}-b${JAVA_VERSION_BUILD}${JAVA_VERSION_UUID}/${JAVA_PACKAGE}-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_UPDATE}-linux-x64.tar.gz" "${DOWNLOAD_DIR}"
 fi
 
-if [ ! -f $JCE_PACKAGE ]; then
+if [ ! -f ${JCE_PACKAGE} ]; then
   download_from_oracle_com "http://download.oracle.com/otn-pub/java/jce/${JAVA_VERSION_MAJOR}/jce_policy-${JAVA_VERSION_MAJOR}.zip" "${DOWNLOAD_DIR}"
 fi
 
-tar -xzf $ORIGINAL_PACKAGE -C ${TEMP_DIR}
-unzip -q $JCE_PACKAGE -d ${TEMP_DIR}
+tar -xzf ${ORIGINAL_PACKAGE} -C ${TEMP_DIR}
+unzip -q ${JCE_PACKAGE} -d ${TEMP_DIR}
 
 # add the updated JCE policy files
 mv ${JCE_DIRECTORY}/*.jar "${JDK_DIRECTORY}/jre/lib/security/"
@@ -136,5 +137,5 @@ sed -i.bak 's;securerandom.source=.*;securerandom.source=file:/dev/urandom;g' ${
 tar -czf ${FINAL_ARTIFACT} -C ${TEMP_DIR} $(basename ${JDK_DIRECTORY})
 
 # clean up
-rm -rf $TEMP_DIR
+rm -rf ${TEMP_DIR}
 
