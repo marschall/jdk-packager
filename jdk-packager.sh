@@ -9,12 +9,12 @@ DOWNLOAD_DIR=${TARGET_DIR}/download
 TEMP_DIR=${TARGET_DIR}/tmp
 
 # configuration variables
-JAVA_VERSION_MAJOR=8
-JAVA_VERSION_UPDATE=121
-JAVA_VERSION_BUILD=13
-JAVA_VERSION_UUID=e9e7ea248e2c4826b92b3f075a80e441
+JAVA_VERSION_MAJOR=
+JAVA_VERSION_UPDATE=
+JAVA_VERSION_BUILD=
+JAVA_VERSION_UUID=
 # jdk or server-jre
-JAVA_PACKAGE=server-jre
+JAVA_PACKAGE=
 PROXY_SERVER=
 
 # Usage and option parsing
@@ -78,6 +78,7 @@ while getopts "hm:u:b:j:p:g:" opt; do
   esac
 done
 
+[ ! -z ${JAVA_PACKAGE} ] || print_usage 1 "Java package not set"
 [ ! -z ${JAVA_VERSION_MAJOR} ] || print_usage 1 "Major version not set"
 [ ! -z ${JAVA_VERSION_UPDATE} ] || print_usage 1 "Update version not set"
 [ ! -z ${JAVA_VERSION_BUILD} ] || print_usage 1 "Build version not set"
@@ -85,6 +86,7 @@ done
 # Convenience functions
 download_from_oracle_com() {
   url=$1
+  echo "downloading ${url}"
   download_dir=$2
   if [ -z ${PROXY_SERVER} ]; then
     (cd "${download_dir}" && curl -fLOH "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" ${url})
