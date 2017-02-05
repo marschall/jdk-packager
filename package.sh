@@ -15,7 +15,7 @@ Usage: ${SCRIPTNAME} (jdk|server-jre)-<version>
   <version>         Version to package, e.g. 1.8.0_121
 
   Example for jdk 1.8.0_121:
-  ${SCRIPTNAME} jdk1.8.0_121
+  ${SCRIPTNAME} jdk-1.8.0_121
 
 EOF
 
