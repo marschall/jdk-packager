@@ -27,9 +27,16 @@ Options supported:
 
 For example to build the server JRE for Java 8 update 121 use the following
 
-   /jdk-packager.sh -m 8 -u 121 -b 13 -g e9e7ea248e2c4826b92b3f075a80e441 -j server-jre
-
+```sh
+ ./jdk-packager.sh -m 8 -u 121 -b 13 -g e9e7ea248e2c4826b92b3f075a80e441 -j server-jre
+ ```
 The output will be in the `target/` folder.
+
+Or simply use
+
+```sh
+./package.sh jdk1.8.0_121
+ ```
 
 Currently only Linux x64 is supported.
 
