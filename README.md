@@ -35,7 +35,7 @@ The output will be in the `target/` folder.
 Or simply use
 
 ```sh
-./package.sh jdk1.8.0_121
+./package.sh server-jre-1.8.0_121
  ```
 
 Currently only Linux x64 is supported.
