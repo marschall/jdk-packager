@@ -26,10 +26,10 @@ EOF
 
 # main
 case $1 in
-	 jdk-1.8.0_121) ${JDK_PACKAGER} -j jdk -m 8 -u 121 -b 13 -g e9e7ea248e2c4826b92b3f075a80e441;;
+     jdk-1.8.0_121) ${JDK_PACKAGER} -j jdk -m 8 -u 121 -b 13 -g e9e7ea248e2c4826b92b3f075a80e441;;
      jdk-1.8.0_112) ${JDK_PACKAGER} -j jdk -m 8 -u 102 -b 15;;
      jdk-1.8.0_111) ${JDK_PACKAGER} -j jdk -m 8 -u 102 -b 14;;
-	 jdk-1.8.0_102) ${JDK_PACKAGER} -j jdk -m 8 -u 102 -b 14;;
+     jdk-1.8.0_102) ${JDK_PACKAGER} -j jdk -m 8 -u 102 -b 14;;
      jdk-1.8.0_101) ${JDK_PACKAGER} -j jdk -m 8 -u 101 -b 13;;
      jdk-1.8.0_92)  ${JDK_PACKAGER} -j jdk -m 8 -u 92 -b 14;;
      jdk-1.8.0_91)  ${JDK_PACKAGER} -j jdk -m 8 -u 91 -b 14;;
@@ -52,7 +52,7 @@ case $1 in
      server-jre-1.8.0_121) ${JDK_PACKAGER} -j server-jre -m 8 -u 121 -b 13 -g e9e7ea248e2c4826b92b3f075a80e441;;
      server-jre-1.8.0_112) ${JDK_PACKAGER} -j server-jre -m 8 -u 102 -b 15;;
      server-jre-1.8.0_111) ${JDK_PACKAGER} -j server-jre -m 8 -u 102 -b 14;;
-	 server-jre-1.8.0_102) ${JDK_PACKAGER} -j server-jre -m 8 -u 102 -b 14;;
+     server-jre-1.8.0_102) ${JDK_PACKAGER} -j server-jre -m 8 -u 102 -b 14;;
      server-jre-1.8.0_101) ${JDK_PACKAGER} -j server-jre -m 8 -u 101 -b 13;;
      server-jre-1.8.0_92)  ${JDK_PACKAGER} -j server-jre -m 8 -u 92 -b 14;;
      server-jre-1.8.0_91)  ${JDK_PACKAGER} -j server-jre -m 8 -u 91 -b 14;;
