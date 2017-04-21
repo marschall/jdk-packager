@@ -12,10 +12,10 @@ exit_code=$1
   cat << EOF
 Usage: ${SCRIPTNAME} (jdk|server-jre)-<version>
   jdk,server-jre    Whether to package a JDK or Server JRE
-  <version>         Version to package, e.g. 1.8.0_121
+  <version>         Version to package, e.g. 1.8.0_131
 
-  Example for jdk 1.8.0_121:
-  ${SCRIPTNAME} jdk-1.8.0_121
+  Example for jdk 1.8.0_131:
+  ${SCRIPTNAME} jdk-1.8.0_131
 
 EOF
 
@@ -26,6 +26,7 @@ EOF
 
 # main
 case $1 in
+     jdk-1.8.0_131) ${JDK_PACKAGER} -j jdk -m 8 -u 131 -b 11 -g d54c1d3a095b4ff2b6607d096fa80163;;
      jdk-1.8.0_121) ${JDK_PACKAGER} -j jdk -m 8 -u 121 -b 13 -g e9e7ea248e2c4826b92b3f075a80e441;;
      jdk-1.8.0_112) ${JDK_PACKAGER} -j jdk -m 8 -u 102 -b 15;;
      jdk-1.8.0_111) ${JDK_PACKAGER} -j jdk -m 8 -u 102 -b 14;;
@@ -49,6 +50,7 @@ case $1 in
      jdk-1.8.0_20)  ${JDK_PACKAGER} -j jdk -m 8 -u 20 -b 26;;
      jdk-1.8.0_11)  ${JDK_PACKAGER} -j jdk -m 8 -u 11 -b 12;;
      jdk-1.8.0_05)  ${JDK_PACKAGER} -m 8 -u 5  -b 13;;
+     server-jre-1.8.0_131) ${JDK_PACKAGER} -j server-jre -m 8 -u 131 -b 11 -g d54c1d3a095b4ff2b6607d096fa80163;;
      server-jre-1.8.0_121) ${JDK_PACKAGER} -j server-jre -m 8 -u 121 -b 13 -g e9e7ea248e2c4826b92b3f075a80e441;;
      server-jre-1.8.0_112) ${JDK_PACKAGER} -j server-jre -m 8 -u 102 -b 15;;
      server-jre-1.8.0_111) ${JDK_PACKAGER} -j server-jre -m 8 -u 102 -b 14;;
