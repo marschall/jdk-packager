@@ -12,10 +12,10 @@ exit_code=$1
   cat << EOF
 Usage: ${SCRIPTNAME} (jdk|server-jre)-<version>
   jdk,server-jre    Whether to package a JDK or Server JRE
-  <version>         Version to package, e.g. 1.8.0_131
+  <version>         Version to package, e.g. 1.8.0_141
 
-  Example for jdk 1.8.0_131:
-  ${SCRIPTNAME} jdk-1.8.0_131
+  Example for jdk 1.8.0_141:
+  ${SCRIPTNAME} jdk-1.8.0_141
 
 EOF
 
@@ -26,6 +26,7 @@ EOF
 
 # main
 case $1 in
+     jdk-1.8.0_141) ${JDK_PACKAGER} -j jdk -m 8 -u 141 -b 15 -g 336fa29ff2bb4ef291e347e091f7f4a7;;
      jdk-1.8.0_131) ${JDK_PACKAGER} -j jdk -m 8 -u 131 -b 11 -g d54c1d3a095b4ff2b6607d096fa80163;;
      jdk-1.8.0_121) ${JDK_PACKAGER} -j jdk -m 8 -u 121 -b 13 -g e9e7ea248e2c4826b92b3f075a80e441;;
      jdk-1.8.0_112) ${JDK_PACKAGER} -j jdk -m 8 -u 102 -b 15;;
