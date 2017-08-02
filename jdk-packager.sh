@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # Locations
 SCRIPTDIR=`cd $(dirname $0); pwd`
 SCRIPTNAME=`basename $0`
