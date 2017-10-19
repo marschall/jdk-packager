@@ -14,7 +14,7 @@ Options supported:
   <dt>-m</dt>
   <dd>major java version eg. `8`</dd>
   <dt>-u</dt>
-  <dd>update release -eg `144`</dd>
+  <dd>update release -eg `152`</dd>
   <dt>-b</dt>
   <dd>build of the update release eg. `01`, you have to manually inspect the download links to find this out</dd>
   <dt>-g</dt>
@@ -25,17 +25,17 @@ Options supported:
   <dd>proxy server to use</dd>
 </dl>
 
-For example to build the server JRE for Java 8 update 144 use the following
+For example to build the server JRE for Java 8 update 152 use the following
 
 ```sh
- ./jdk-packager.sh -m 8 -u 144 -b 01 -g 090f390dda5b47b9b721c7dfaa008135 -j server-jre
+ ./jdk-packager.sh -m 8 -u 152 -b 16 -g aa0333dd3019491ca4f6ddbe78cdb6d0 -j server-jre
  ```
 The output will be in the `target/` folder.
 
 Or simply use
 
 ```sh
-./package.sh server-jre-1.8.0_144
+./package.sh server-jre-1.8.0_152
  ```
 
 Currently only Linux x64 is supported.
