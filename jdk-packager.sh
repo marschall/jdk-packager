@@ -105,7 +105,7 @@ function use_new_jce_policy_mechanism() {
   java_version_major="$1"
   java_version_update="$2"
 
-  (( java_version_major > 8  || (java_version_update > 151 && java_version_update % 2 == 0) ))
+  (( java_version_major > 8  || java_version_update >= 151 ))
 }
 
 # Main
