@@ -38,8 +38,8 @@ Usage: ${SCRIPTNAME} <options>
     -j    Java package (jdk or server-jre)
     -h    Print this help message
 
-  Example for server-jre 8u121:
-  ${SCRIPTNAME} -m 8 -u 121 -b 13 -g e9e7ea248e2c4826b92b3f075a80e441
+  Example for server-jre 8u152:
+  ${SCRIPTNAME} -m 8 -u 152 -b 16 -g aa0333dd3019491ca4f6ddbe78cdb6d0
 
 EOF
 
