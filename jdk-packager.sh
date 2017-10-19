@@ -101,6 +101,13 @@ download_from_oracle_com() {
   fi
 }
 
+function use_new_jce_policy_mechanism() {
+  java_version_major="$1"
+  java_version_update="$2"
+
+  (( java_version_major > 8  || (java_version_update > 151 && java_version_update % 2 == 0) ))
+}
+
 # Main
 ORIGINAL_PACKAGE=${DOWNLOAD_DIR}/${JAVA_PACKAGE}-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_UPDATE}-linux-x64.tar.gz
 JCE_PACKAGE=${DOWNLOAD_DIR}/jce_policy-${JAVA_VERSION_MAJOR}.zip
@@ -126,15 +133,20 @@ if [ ! -f ${ORIGINAL_PACKAGE} ]; then
   download_from_oracle_com "http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION_MAJOR}u${JAVA_VERSION_UPDATE}-b${JAVA_VERSION_BUILD}${JAVA_VERSION_UUID}/${JAVA_PACKAGE}-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_UPDATE}-linux-x64.tar.gz" "${DOWNLOAD_DIR}"
 fi
 
-if [ ! -f ${JCE_PACKAGE} ]; then
-  download_from_oracle_com "http://download.oracle.com/otn-pub/java/jce/${JAVA_VERSION_MAJOR}/jce_policy-${JAVA_VERSION_MAJOR}.zip" "${DOWNLOAD_DIR}"
+tar -xzf ${ORIGINAL_PACKAGE} -C ${TEMP_DIR}
+
+if use_new_jce_policy_mechanism ${JAVA_VERSION_MAJOR} ${JAVA_VERSION_UPDATE}; then
+  sed -i.bak 's;^#crypto.policy=unlimited;crypto.policy=unlimited;g' ${JDK_DIRECTORY}/jre/lib/security/java.security
+else
+  if [ ! -f ${JCE_PACKAGE} ]; then
+    download_from_oracle_com "http://download.oracle.com/otn-pub/java/jce/${JAVA_VERSION_MAJOR}/jce_policy-${JAVA_VERSION_MAJOR}.zip" "${DOWNLOAD_DIR}"
+  fi
+
+  unzip -q ${JCE_PACKAGE} -d ${TEMP_DIR}
+  # add the updated JCE policy files
+  mv ${JCE_DIRECTORY}/*.jar "${JDK_DIRECTORY}/jre/lib/security/"
 fi
 
-tar -xzf ${ORIGINAL_PACKAGE} -C ${TEMP_DIR}
-unzip -q ${JCE_PACKAGE} -d ${TEMP_DIR}
-
-# add the updated JCE policy files
-mv ${JCE_DIRECTORY}/*.jar "${JDK_DIRECTORY}/jre/lib/security/"
 # set the egd to /dev/urandom
 sed -i.bak 's;securerandom.source=.*;securerandom.source=file:/dev/urandom;g' ${JDK_DIRECTORY}/jre/lib/security/java.security
 
@@ -142,4 +154,3 @@ tar -czf ${FINAL_ARTIFACT} -C ${TEMP_DIR} $(basename ${JDK_DIRECTORY})
 
 # clean up
 rm -rf ${TEMP_DIR}
-
