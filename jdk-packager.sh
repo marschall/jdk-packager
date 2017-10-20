@@ -101,13 +101,6 @@ download_from_oracle_com() {
   fi
 }
 
-function use_new_jce_policy_mechanism() {
-  java_version_major="$1"
-  java_version_update="$2"
-
-  (( java_version_major > 8  || java_version_update >= 151 ))
-}
-
 # Main
 ORIGINAL_PACKAGE=${DOWNLOAD_DIR}/${JAVA_PACKAGE}-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_UPDATE}-linux-x64.tar.gz
 JDK_DIRECTORY=${TEMP_DIR}/jdk1.${JAVA_VERSION_MAJOR}.0_${JAVA_VERSION_UPDATE}
