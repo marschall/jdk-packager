@@ -110,8 +110,6 @@ function use_new_jce_policy_mechanism() {
 
 # Main
 ORIGINAL_PACKAGE=${DOWNLOAD_DIR}/${JAVA_PACKAGE}-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_UPDATE}-linux-x64.tar.gz
-JCE_PACKAGE=${DOWNLOAD_DIR}/jce_policy-${JAVA_VERSION_MAJOR}.zip
-JCE_DIRECTORY=${TEMP_DIR}/UnlimitedJCEPolicyJDK${JAVA_VERSION_MAJOR}
 JDK_DIRECTORY=${TEMP_DIR}/jdk1.${JAVA_VERSION_MAJOR}.0_${JAVA_VERSION_UPDATE}
 FINAL_ARTIFACT=${TARGET_DIR}/${JAVA_PACKAGE}-1.${JAVA_VERSION_MAJOR}.0u${JAVA_VERSION_UPDATE}.tar.gz
 
@@ -135,17 +133,8 @@ fi
 
 tar -xzf ${ORIGINAL_PACKAGE} -C ${TEMP_DIR}
 
-if use_new_jce_policy_mechanism ${JAVA_VERSION_MAJOR} ${JAVA_VERSION_UPDATE}; then
-  sed -i.bak 's;^#crypto.policy=unlimited;crypto.policy=unlimited;g' ${JDK_DIRECTORY}/jre/lib/security/java.security
-else
-  if [ ! -f ${JCE_PACKAGE} ]; then
-    download_from_oracle_com "http://download.oracle.com/otn-pub/java/jce/${JAVA_VERSION_MAJOR}/jce_policy-${JAVA_VERSION_MAJOR}.zip" "${DOWNLOAD_DIR}"
-  fi
-
-  unzip -q ${JCE_PACKAGE} -d ${TEMP_DIR}
-  # add the updated JCE policy files
-  mv ${JCE_DIRECTORY}/*.jar "${JDK_DIRECTORY}/jre/lib/security/"
-fi
+# set crypto.policy to unlimited
+sed -i.bak 's;^#crypto.policy=unlimited;crypto.policy=unlimited;g' ${JDK_DIRECTORY}/jre/lib/security/java.security
 
 # set the egd to /dev/urandom
 sed -i.bak 's;securerandom.source=.*;securerandom.source=file:/dev/urandom;g' ${JDK_DIRECTORY}/jre/lib/security/java.security
