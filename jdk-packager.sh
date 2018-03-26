@@ -11,13 +11,8 @@ DOWNLOAD_DIR=${TARGET_DIR}/download
 TEMP_DIR=${TARGET_DIR}/tmp
 
 # configuration variables
-JAVA_VERSION_MAJOR=
-JAVA_VERSION_UPDATE=
+JAVA_VERSION=
 JAVA_VERSION_BUILD=
-JAVA_VERSION_UUID=
-# jdk or server-jre
-JAVA_PACKAGE=
-PROXY_SERVER=
 
 # Usage and option parsing
 print_usage() {
@@ -31,15 +26,12 @@ print_usage() {
   cat << EOF
 Usage: ${SCRIPTNAME} <options>
   <options>:
-    -m    Java major version
-    -u    Java update version
+    -v    Java version
     -b    Java build version
-    -g    Java version UUID (for Java 8u121 and greater)
-    -j    Java package (jdk or server-jre)
     -h    Print this help message
 
-  Example for server-jre 8u152:
-  ${SCRIPTNAME} -m 8 -u 152 -b 16 -g aa0333dd3019491ca4f6ddbe78cdb6d0
+  Example for 9.0.1:
+  ${SCRIPTNAME} -v 9.0.1 -b 11
 
 EOF
 
@@ -48,22 +40,13 @@ EOF
   fi
 }
 
-while getopts "hm:u:b:j:p:g:" opt; do
+while getopts "hv:b:p:" opt; do
   case ${opt} in
-    m)
-      JAVA_VERSION_MAJOR=${OPTARG}
-      ;;
-    u)
-      JAVA_VERSION_UPDATE=${OPTARG}
+    v)
+      JAVA_VERSION=${OPTARG}
       ;;
     b)
       JAVA_VERSION_BUILD=${OPTARG}
-      ;;
-    g)
-      JAVA_VERSION_UUID="/${OPTARG}"
-      ;;
-    j)
-      JAVA_PACKAGE=${OPTARG}
       ;;
     p)
       PROXY_SERVER=${OPTARG}
@@ -80,9 +63,7 @@ while getopts "hm:u:b:j:p:g:" opt; do
   esac
 done
 
-[ ! -z ${JAVA_PACKAGE} ] || print_usage 1 "Java package not set"
-[ ! -z ${JAVA_VERSION_MAJOR} ] || print_usage 1 "Major version not set"
-[ ! -z ${JAVA_VERSION_UPDATE} ] || print_usage 1 "Update version not set"
+[ ! -z ${JAVA_VERSION} ] || print_usage 1 "Version not set"
 [ ! -z ${JAVA_VERSION_BUILD} ] || print_usage 1 "Build version not set"
 
 # Convenience functions
@@ -102,9 +83,10 @@ download_from_oracle_com() {
 }
 
 # Main
-ORIGINAL_PACKAGE=${DOWNLOAD_DIR}/${JAVA_PACKAGE}-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_UPDATE}-linux-x64.tar.gz
-JDK_DIRECTORY=${TEMP_DIR}/jdk1.${JAVA_VERSION_MAJOR}.0_${JAVA_VERSION_UPDATE}
-FINAL_ARTIFACT=${TARGET_DIR}/${JAVA_PACKAGE}-1.${JAVA_VERSION_MAJOR}.0u${JAVA_VERSION_UPDATE}.tar.gz
+# jdk-9.0.1_linux-x64_bin.tar.gz
+ORIGINAL_PACKAGE=${DOWNLOAD_DIR}/jdk-${JAVA_VERSION}_linux-x64_bin.tar.gz
+JDK_DIRECTORY=${TEMP_DIR}/jdk-"${JAVA_VERSION}"
+FINAL_ARTIFACT=${TARGET_DIR}/jdk-${JAVA_VERSION}.tar.gz
 
 
 # prepare directories
@@ -121,16 +103,13 @@ mkdir -p "${DOWNLOAD_DIR}"
 mkdir -p "${TEMP_DIR}"
 
 if [ ! -f ${ORIGINAL_PACKAGE} ]; then
-  download_from_oracle_com "http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION_MAJOR}u${JAVA_VERSION_UPDATE}-b${JAVA_VERSION_BUILD}${JAVA_VERSION_UUID}/${JAVA_PACKAGE}-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_UPDATE}-linux-x64.tar.gz" "${DOWNLOAD_DIR}"
+  download_from_oracle_com "http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION}+${JAVA_VERSION_BUILD}/jdk-${JAVA_VERSION}_linux-x64_bin.tar.gz" "${DOWNLOAD_DIR}"
 fi
 
 tar -xzf ${ORIGINAL_PACKAGE} -C ${TEMP_DIR}
 
-# set crypto.policy to unlimited
-sed -i.bak 's;^#crypto.policy=unlimited;crypto.policy=unlimited;g' ${JDK_DIRECTORY}/jre/lib/security/java.security
-
 # set the egd to /dev/urandom
-sed -i.bak 's;securerandom.source=.*;securerandom.source=file:/dev/urandom;g' ${JDK_DIRECTORY}/jre/lib/security/java.security
+sed -i.bak 's;securerandom.source=.*;securerandom.source=file:/dev/urandom;g' ${JDK_DIRECTORY}/conf/security/java.security
 
 tar -czf ${FINAL_ARTIFACT} -C ${TEMP_DIR} $(basename ${JDK_DIRECTORY})
 

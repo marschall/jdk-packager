@@ -14,28 +14,28 @@ Options supported:
   <dt>-m</dt>
   <dd>major java version eg. `8`</dd>
   <dt>-u</dt>
-  <dd>update release -eg `152`</dd>
+  <dd>update release -eg `162`</dd>
   <dt>-b</dt>
-  <dd>build of the update release eg. `01`, you have to manually inspect the download links to find this out</dd>
+  <dd>build of the update release eg. `12`, you have to manually inspect the download links to find this out</dd>
   <dt>-g</dt>
-  <dd>the UUID in the download URL (starting with 8u121) eg. `090f390dda5b47b9b721c7dfaa008135`, you have to manually inspect the download links to find this out, optional</dd>
+  <dd>the UUID in the download URL (starting with 8u121) eg. `0da788060d494f5095bf8624735fa2f1`, you have to manually inspect the download links to find this out, optional</dd>
   <dt>-j</dt>
   <dd>package to use `jdk` or `server-jre`</dd>
   <dt>-p</dt>
   <dd>proxy server to use</dd>
 </dl>
 
-For example to build the server JRE for Java 8 update 152 use the following
+For example to build the server JRE for Java 8 update 162 use the following
 
 ```sh
- ./jdk-packager.sh -m 8 -u 152 -b 16 -g aa0333dd3019491ca4f6ddbe78cdb6d0 -j server-jre
+ ./jdk-packager-8.sh -m 8 -u 162 -b 12 -g 0da788060d494f5095bf8624735fa2f1 -j server-jre
  ```
 The output will be in the `target/` folder.
 
 Or simply use
 
 ```sh
-./package.sh server-jre-1.8.0_152
+./package.sh server-jre-1.8.0_162
  ```
 
 Currently only Linux x64 is supported.
