@@ -13,10 +13,10 @@ exit_code=$1
   cat << EOF
 Usage: ${SCRIPTNAME} (jdk|server-jre)-<version>
   jdk,server-jre    Whether to package a JDK or Server JRE
-  <version>         Version to package, e.g. 1.8.0_152
+  <version>         Version to package, e.g. 1.8.0_162
 
-  Example for jdk 1.8.0_152:
-  ${SCRIPTNAME} jdk-1.8.0_152
+  Example for jdk 1.8.0_162:
+  ${SCRIPTNAME} jdk-1.8.0_162
 
 EOF
 
@@ -28,10 +28,10 @@ EOF
 # main
 case $1 in
      jdk-9.0.1) ${JDK_PACKAGER_9} -v 9 -b 11
-     jdk-1.8.0_152) ${JDK_PACKAGER} -j jdk -m 8 -u 152 -b 16 -g aa0333dd3019491ca4f6ddbe78cdb6d0;;
-     jdk-1.8.0_151) ${JDK_PACKAGER} -j jdk -m 8 -u 151 -b 12 -g e758a0de34e24606bca991d704f6dcbf;;
-     server-jre-1.8.0_152) ${JDK_PACKAGER} -j server-jre -m 8 -u 152 -b 16 -g aa0333dd3019491ca4f6ddbe78cdb6d0;;
-     server-jre-1.8.0_151) ${JDK_PACKAGER} -j server-jre -m 8 -u 151 -b 12 -g e758a0de34e24606bca991d704f6dcbf;;
+     jdk-1.8.0_162) ${JDK_PACKAGER} -j jdk -m 8 -u 162 -b 12 -g 0da788060d494f5095bf8624735fa2f1;;
+     jdk-1.8.0_161) ${JDK_PACKAGER} -j jdk -m 8 -u 161 -b 12 -g 2f38c3b165be4555a1fa6e98c45e0808;;
+     server-jre-1.8.0_162) ${JDK_PACKAGER} -j server-jre -m 8 -u 162 -b 12 -g 0da788060d494f5095bf8624735fa2f1;;
+     server-jre-1.8.0_161) ${JDK_PACKAGER} -j server-jre -m 8 -u 161 -b 12 -g 2f38c3b165be4555a1fa6e98c45e0808;;
      -h) print_usage 0;;
      *)  echo "Invalid option '$1'"
          print_usage 1
