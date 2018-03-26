@@ -28,10 +28,11 @@ Usage: ${SCRIPTNAME} <options>
   <options>:
     -v    Java version
     -b    Java build version
+    -b    Java build UUID
     -h    Print this help message
 
-  Example for 9.0.1:
-  ${SCRIPTNAME} -v 9.0.1 -b 11
+  Example for 10:
+  ${SCRIPTNAME} -v 10 -b 46 -u 76eac37278c24557a3c4199677f19b62
 
 EOF
 
@@ -40,13 +41,16 @@ EOF
   fi
 }
 
-while getopts "hv:b:p:" opt; do
+while getopts "hv:b:u:p:" opt; do
   case ${opt} in
     v)
       JAVA_VERSION=${OPTARG}
       ;;
     b)
       JAVA_VERSION_BUILD=${OPTARG}
+      ;;
+    u)
+      JAVA_VERSION_UUID=${OPTARG}
       ;;
     p)
       PROXY_SERVER=${OPTARG}
@@ -65,6 +69,8 @@ done
 
 [ ! -z ${JAVA_VERSION} ] || print_usage 1 "Version not set"
 [ ! -z ${JAVA_VERSION_BUILD} ] || print_usage 1 "Build version not set"
+[ ! -z ${JAVA_VERSION_UUID} ] || print_usage 1 "Build UUID not set"
+
 
 # Convenience functions
 download_from_oracle_com() {
@@ -103,7 +109,7 @@ mkdir -p "${DOWNLOAD_DIR}"
 mkdir -p "${TEMP_DIR}"
 
 if [ ! -f ${ORIGINAL_PACKAGE} ]; then
-  download_from_oracle_com "http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION}+${JAVA_VERSION_BUILD}/jdk-${JAVA_VERSION}_linux-x64_bin.tar.gz" "${DOWNLOAD_DIR}"
+  download_from_oracle_com "http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION}+${JAVA_VERSION_BUILD}/${JAVA_VERSION_UUID}/jdk-${JAVA_VERSION}_linux-x64_bin.tar.gz" "${DOWNLOAD_DIR}"
 fi
 
 tar -xzf ${ORIGINAL_PACKAGE} -C ${TEMP_DIR}
