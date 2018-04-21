@@ -31,8 +31,8 @@ Usage: ${SCRIPTNAME} <options>
     -b    Java build UUID
     -h    Print this help message
 
-  Example for 10:
-  ${SCRIPTNAME} -v 10 -b 46 -u 76eac37278c24557a3c4199677f19b62
+  Example for 10.0.1:
+  ${SCRIPTNAME} -v 10.0.1 -b 11 -u fb4372174a714e6b8c52526dc134031e
 
 EOF
 

@@ -34,12 +34,12 @@ Usage: ${SCRIPTNAME} <options>
     -m    Java major version
     -u    Java update version
     -b    Java build version
-    -g    Java version UUID (for Java 8u121 and greater)
+    -g    Java version UUID
     -j    Java package (jdk or server-jre)
     -h    Print this help message
 
-  Example for server-jre 8u152:
-  ${SCRIPTNAME} -m 8 -u 152 -b 16 -g aa0333dd3019491ca4f6ddbe78cdb6d0
+  Example for server-jre 8u172:
+  ${SCRIPTNAME} -m 8 -u 172 -b 11 -g a58eab1ec242421181065cdc37240b08
 
 EOF
 
